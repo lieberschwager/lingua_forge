@@ -1,0 +1,14 @@
+name: lingua_forge
+description: Sprachlern-App mit KI-Unterstützung
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_tts: ^3.6.3
+
+flutter:
+  uses-material-design: true
