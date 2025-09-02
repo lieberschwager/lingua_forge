@@ -1,0 +1,17 @@
+# Gradle
+.gradle/
+build/
+local.properties
+
+# IDEs
+.idea/
+*.iml
+
+# Flutter
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+
+# Misc
+*.log
