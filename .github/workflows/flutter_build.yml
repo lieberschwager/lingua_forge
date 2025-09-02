@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Clear Gradle cache
+        run: rm -rf ~/.gradle
+
       - name: Build APK
         run: flutter build apk --release
 
