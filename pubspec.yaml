@@ -9,6 +9,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_tts: ^3.6.3
+  http: ^1.1.0
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/logo.png
