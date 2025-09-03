@@ -27,37 +27,16 @@ jobs:
       - name: Create fresh Flutter project
         run: flutter create -t app lingua_forge_clean
 
-      - name: Remove alte Projektstruktur
-        run: |
-          rm -rf lingua_forge/android || true
-          rm -rf lingua_forge/lib || true
-          rm -rf lingua_forge/assets || true
-          test -f lingua_forge/pubspec.yaml && rm lingua_forge/pubspec.yaml || true
-
       - name: Copy source files
         run: |
-          cp -r lingua_forge/lib lingua_forge_clean/
-          cp -r lingua_forge/assets lingua_forge_clean/
-          cp lingua_forge/pubspec.yaml lingua_forge_clean/
-
-      - name: Rename new project to original name
-        run: |
-          rm -rf lingua_forge
-          mv lingua_forge_clean lingua_forge
-
-      - name: Clean Flutter project
-        run: |
-          cd lingua_forge
-          flutter clean
-
-      - name: Install dependencies
-        run: |
-          cd lingua_forge
-          flutter pub get
+          cp -r lingua_forge/lib lingua_forge_clean/ || echo "lib fehlt"
+          cp -r lingua_forge/assets lingua_forge_clean/ || echo "assets fehlen"
+          cp lingua_forge/pubspec.yaml lingua_forge_clean/ || echo "pubspec fehlt"
 
       - name: Build APK (release)
         run: |
-          cd lingua_forge
+          cd lingua_forge_clean
+          flutter pub get
           flutter build apk --release
 
       - name: Ensure upload folder exists
@@ -65,9 +44,9 @@ jobs:
 
       - name: Move APK if it exists
         run: |
-          if [ -f lingua_forge/build/app/outputs/flutter-apk/app-release.apk ]; then
+          if [ -f lingua_forge_clean/build/app/outputs/flutter-apk/app-release.apk ]; then
             echo "✅ APK found. Moving to upload folder..."
-            cp lingua_forge/build/app/outputs/flutter-apk/app-release.apk upload/
+            cp lingua_forge_clean/build/app/outputs/flutter-apk/app-release.apk upload/
           else
             echo "❌ No APK found. Build may have failed."
           fi
