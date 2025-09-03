@@ -29,16 +29,16 @@ jobs:
 
       - name: Remove alte Projektstruktur
         run: |
-          rm -rf android
-          rm -rf lib
-          rm -rf assets
-          rm pubspec.yaml
+          rm -rf lingua_forge/android
+          rm -rf lingua_forge/lib
+          rm -rf lingua_forge/assets
+          rm lingua_forge/pubspec.yaml
 
       - name: Copy source files
         run: |
-          cp -r lib lingua_forge_clean/
-          cp -r assets lingua_forge_clean/
-          cp pubspec.yaml lingua_forge_clean/
+          cp -r lingua_forge/lib lingua_forge_clean/
+          cp -r lingua_forge/assets lingua_forge_clean/
+          cp lingua_forge/pubspec.yaml lingua_forge_clean/
 
       - name: Rename new project to original name
         run: |
