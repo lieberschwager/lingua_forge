@@ -29,10 +29,10 @@ jobs:
 
       - name: Remove alte Projektstruktur
         run: |
-          rm -rf lingua_forge/android
-          rm -rf lingua_forge/lib
-          rm -rf lingua_forge/assets
-          rm lingua_forge/pubspec.yaml
+          rm -rf lingua_forge/android || true
+          rm -rf lingua_forge/lib || true
+          rm -rf lingua_forge/assets || true
+          test -f lingua_forge/pubspec.yaml && rm lingua_forge/pubspec.yaml || true
 
       - name: Copy source files
         run: |
