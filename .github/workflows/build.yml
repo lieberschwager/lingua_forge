@@ -3,6 +3,7 @@ name: Build APK
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -23,22 +24,40 @@ jobs:
         with:
           flutter-version: '3.22.0'
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Create fresh Flutter project
+        run: flutter create -t app lingua_forge_clean
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Copy source files
+        run: |
+          cp -r lib lingua_forge_clean/
+          cp pubspec.yaml lingua_forge_clean/
+          cp -r assets lingua_forge_clean/
+
+      - name: Clean Flutter project
+        run: |
+          cd lingua_forge_clean
+          flutter clean
+
+      - name: Install dependencies
+        run: |
+          cd lingua_forge_clean
+          flutter pub get
+
+      - name: Build APK (release)
+        run: |
+          cd lingua_forge_clean
+          flutter build apk --release
 
       - name: Ensure upload folder exists
         run: mkdir -p upload
 
       - name: Move APK if it exists
         run: |
-          if [ -f build/app/outputs/flutter-apk/app-release.apk ]; then
-            echo "APK found. Moving to upload folder..."
-            cp build/app/outputs/flutter-apk/app-release.apk upload/
+          if [ -f lingua_forge_clean/build/app/outputs/flutter-apk/app-release.apk ]; then
+            echo "✅ APK found. Moving to upload folder..."
+            cp lingua_forge_clean/build/app/outputs/flutter-apk/app-release.apk upload/
           else
-            echo "No APK found. Proceeding without upload."
+            echo "❌ No APK found. Build may have failed."
           fi
 
       - name: Upload APK
