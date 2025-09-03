@@ -21,13 +21,13 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     java {
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(18))
+            languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
 
@@ -51,5 +51,5 @@ flutter {
 }
 
 kotlin {
-    jvmToolchain(18)
+    jvmToolchain(17)
 }
