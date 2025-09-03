@@ -29,14 +29,16 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      - name: Prepare APK for upload
+      - name: Ensure upload folder exists
+        run: mkdir -p upload
+
+      - name: Move APK if it exists
         run: |
           if [ -f build/app/outputs/flutter-apk/app-release.apk ]; then
-            echo "APK found. Preparing for upload..."
-            mkdir -p upload
+            echo "APK found. Moving to upload folder..."
             cp build/app/outputs/flutter-apk/app-release.apk upload/
           else
-            echo "No APK found. Skipping upload."
+            echo "No APK found. Proceeding without upload."
           fi
 
       - name: Upload APK
