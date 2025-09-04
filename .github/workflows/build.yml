@@ -33,14 +33,17 @@ jobs:
           rm -rf lingua_forge
           mv lingua_forge_clean lingua_forge
 
-      - name: 🧠 Commit new project to repository (mit Pull)
+      - name: 🧠 Commit new project before pulling
         run: |
           git config --global user.email "ci@linguaforge.com"
           git config --global user.name "LinguaForge CI"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/lieberschwager/lingua_forge.git
-          git pull origin main --rebase
           git add -A
           git diff --cached --quiet || git commit -m "CI: Übernehme lingua_forge_clean als neues Projekt"
+
+      - name: 🔄 Pull latest changes and push
+        run: |
+          git pull origin main --rebase
           git push origin main
 
       - name: 🚀 Build APK
