@@ -1,4 +1,4 @@
-name: Build and Deploy Flutter APK
+name: Build and Deploy LinguaForge APK
 
 on:
   workflow_dispatch:
@@ -27,33 +27,20 @@ jobs:
       - name: 🧱 Create new Flutter project
         run: flutter create -t app lingua_forge_clean
 
-      - name: 📦 Copy existing source files
+      - name: 🔁 Replace old project with new
         run: |
-          cp -r lingua_forge/lib lingua_forge_clean/ || echo "lib fehlt"
-          cp -r lingua_forge/assets lingua_forge_clean/ || echo "assets fehlen"
-          cp lingua_forge/pubspec.yaml lingua_forge_clean/ || echo "pubspec fehlt"
+          git rm -r lingua_forge || echo "Ordner nicht versioniert oder bereits entfernt"
+          rm -rf lingua_forge
+          mv lingua_forge_clean lingua_forge
 
-      - name: 🔁 Replace old project if not already updated
+      - name: 🧠 Commit new project to repository (einmalig)
         run: |
-          if [ ! -f lingua_forge/pubspec.yaml ]; then
-            rm -rf lingua_forge
-            mv lingua_forge_clean lingua_forge
-          else
-            echo "✅ lingua_forge ist bereits aktualisiert. Kein Ersetzen nötig."
-          fi
-
-      - name: 🧠 Commit new project to repository (nur einmal)
-        run: |
-          if [ ! -f lingua_forge/pubspec.yaml ]; then
-            git config --global user.email "ci@linguaforge.com"
-            git config --global user.name "LinguaForge CI"
-            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/lieberschwager/lingua_forge.git
-            git add lingua_forge
-            git commit -m "CI: Übernehme funktionierendes Flutter-Projekt"
-            git push origin main
-          else
-            echo "✅ Projekt bereits übernommen. Kein Commit nötig."
-          fi
+          git config --global user.email "ci@linguaforge.com"
+          git config --global user.name "LinguaForge CI"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/lieberschwager/lingua_forge.git
+          git add -A
+          git diff --cached --quiet || git commit -m "CI: Übernehme lingua_forge_clean als neues Projekt"
+          git push origin main
 
       - name: 🚀 Build APK
         run: |
@@ -66,11 +53,7 @@ jobs:
 
       - name: 📤 Move APK to upload folder
         run: |
-          if [ -f lingua_forge/build/app/outputs/flutter-apk/app-release.apk ]; then
-            cp lingua_forge/build/app/outputs/flutter-apk/app-release.apk upload/
-          else
-            echo "❌ APK nicht gefunden. Build fehlgeschlagen?"
-          fi
+          cp lingua_forge/build/app/outputs/flutter-apk/app-release.apk upload/
 
       - name: 📎 Upload APK as artifact
         uses: actions/upload-artifact@v4
