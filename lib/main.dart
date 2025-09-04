@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+<<<<<<< HEAD
 void main() {
   runApp(const MyApp());
 }
@@ -123,3 +124,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+=======
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+        home: Scaffold(
+          body: Center(child: Text('Lingua Forge CI Build')),
+        ),
+      );
+>>>>>>> 162462a (🚀 Add WelcomeScreen, dynamic language dropdown, and API integration)
