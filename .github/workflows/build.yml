@@ -1,57 +1,78 @@
-name: Build APK
+name: Build and Deploy Flutter APK
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: 📥 Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Java 17
+      - name: ☕ Set up Java
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Set up Flutter
+      - name: 🛠️ Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
 
-      - name: Create fresh Flutter project
+      - name: 🧱 Create new Flutter project
         run: flutter create -t app lingua_forge_clean
 
-      - name: Copy source files
+      - name: 📦 Copy existing source files
         run: |
           cp -r lingua_forge/lib lingua_forge_clean/ || echo "lib fehlt"
           cp -r lingua_forge/assets lingua_forge_clean/ || echo "assets fehlen"
           cp lingua_forge/pubspec.yaml lingua_forge_clean/ || echo "pubspec fehlt"
 
-      - name: Build APK (release)
+      - name: 🔁 Replace old project if not already updated
         run: |
-          cd lingua_forge_clean
+          if [ ! -f lingua_forge/pubspec.yaml ]; then
+            rm -rf lingua_forge
+            mv lingua_forge_clean lingua_forge
+          else
+            echo "✅ lingua_forge ist bereits aktualisiert. Kein Ersetzen nötig."
+          fi
+
+      - name: 🧠 Commit new project to repository (nur einmal)
+        run: |
+          if [ ! -f lingua_forge/pubspec.yaml ]; then
+            git config --global user.email "ci@linguaforge.com"
+            git config --global user.name "LinguaForge CI"
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/lieberschwager/lingua_forge.git
+            git add lingua_forge
+            git commit -m "CI: Übernehme funktionierendes Flutter-Projekt"
+            git push origin main
+          else
+            echo "✅ Projekt bereits übernommen. Kein Commit nötig."
+          fi
+
+      - name: 🚀 Build APK
+        run: |
+          cd lingua_forge
           flutter pub get
           flutter build apk --release
 
-      - name: Ensure upload folder exists
+      - name: 📁 Prepare upload folder
         run: mkdir -p upload
 
-      - name: Move APK if it exists
+      - name: 📤 Move APK to upload folder
         run: |
-          if [ -f lingua_forge_clean/build/app/outputs/flutter-apk/app-release.apk ]; then
-            echo "✅ APK found. Moving to upload folder..."
-            cp lingua_forge_clean/build/app/outputs/flutter-apk/app-release.apk upload/
+          if [ -f lingua_forge/build/app/outputs/flutter-apk/app-release.apk ]; then
+            cp lingua_forge/build/app/outputs/flutter-apk/app-release.apk upload/
           else
-            echo "❌ No APK found. Build may have failed."
+            echo "❌ APK nicht gefunden. Build fehlgeschlagen?"
           fi
 
-      - name: Upload APK
+      - name: 📎 Upload APK as artifact
         uses: actions/upload-artifact@v4
         with:
           name: lingua_forge-release-apk
