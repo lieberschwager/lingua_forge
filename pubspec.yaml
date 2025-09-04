@@ -1,12 +1,20 @@
 name: lingua_forge
-description: CI-ready Flutter app
-publish_to: "none"
+description: Eine Demo-App für LinguaForge
+publish_to: 'none' # Dieses Projekt wird nicht veröffentlicht
+
+version: 1.0.0+1
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
     sdk: flutter
 
 flutter:
