@@ -24,27 +24,32 @@ jobs:
         with:
           flutter-version: '3.22.0'
 
-      - name: 🧱 Create new Flutter project
-        run: flutter create -t app lingua_forge_clean
+      # ❌ Temporär deaktiviert: Erstellt neues Flutter-Projekt und überschreibt bestehende Struktur
+      # - name: 🧱 Create new Flutter project
+      #   run: flutter create -t app lingua_forge_clean
 
-      - name: 🔁 Replace old project with new (Root-Level)
-        run: |
-          rm -rf lib assets pubspec.yaml android ios macos windows linux web test analysis_options.yaml .metadata README.md
-          cp -r lingua_forge_clean/* .
-          rm -rf lingua_forge_clean
+      # ❌ Kritisch: Löscht dein gesamtes Projekt und ersetzt es durch lingua_forge_clean
+      # - name: 🔁 Replace old project with new (Root-Level)
+      #   run: |
+      #     # ⚠️ Deaktiviert, da dieser Schritt dein Projekt bei jedem Build gelöscht hat
+      #     # rm -rf lib assets pubspec.yaml android ios macos windows linux web test analysis_options.yaml .metadata README.md
+      #     # cp -r lingua_forge_clean/* .
+      #     # rm -rf lingua_forge_clean
 
-      - name: 🧠 Commit new project before pulling
-        run: |
-          git config --global user.email "ci@linguaforge.com"
-          git config --global user.name "LinguaForge CI"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/lieberschwager/lingua_forge.git
-          git add -A
-          git diff --cached --quiet || git commit -m "CI: Übernehme lingua_forge_clean direkt ins Repository"
+      # ❌ Automatischer Commit der Clean-Version — deaktiviert, um dein Repo zu schützen
+      # - name: 🧠 Commit new project before pulling
+      #   run: |
+      #     # git config --global user.email "ci@linguaforge.com"
+      #     # git config --global user.name "LinguaForge CI"
+      #     # git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/lieberschwager/lingua_forge.git
+      #     # git add -A
+      #     # git diff --cached --quiet || git commit -m "CI: Übernehme lingua_forge_clean direkt ins Repository"
 
-      - name: 🔄 Pull latest changes and push
-        run: |
-          git pull origin main --rebase
-          git push origin main
+      # ❌ Pull & Push nach automatischem Commit — ebenfalls deaktiviert
+      # - name: 🔄 Pull latest changes and push
+      #   run: |
+      #     # git pull origin main --rebase
+      #     # git push origin main
 
       - name: 🚀 Build APK
         run: |
