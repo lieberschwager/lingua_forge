@@ -17,3 +17,4 @@ class LinguaForgeApp extends StatelessWidget {
       home: const WelcomeScreen(),
     );
   }
+}
