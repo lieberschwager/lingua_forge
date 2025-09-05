@@ -123,4 +123,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-// Updated entry point for LinguaForge
