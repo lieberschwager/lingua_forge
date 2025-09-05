@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'main_menu_screen.dart'; // Navigation zur Hauptseite
+import 'main_menu_screen.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
   const LanguageSelectionScreen({super.key});
@@ -14,6 +14,14 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
   List<String> availableLanguages = [];
   String? sourceLanguage;
   String? targetLanguage;
+
+  final Map<String, String> languageLabels = {
+    "de": "Deutsch",
+    "en": "English",
+    "vi": "Tiếng Việt",
+    "fr": "Français",
+    "es": "Español",
+  };
 
   @override
   void initState() {
@@ -55,7 +63,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
               items: availableLanguages.map((lang) {
                 return DropdownMenuItem(
                   value: lang,
-                  child: Text(lang.toUpperCase()),
+                  child: Text(languageLabels[lang] ?? lang.toUpperCase()),
                 );
               }).toList(),
               onChanged: (value) {
@@ -75,7 +83,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
               items: availableLanguages.map((lang) {
                 return DropdownMenuItem(
                   value: lang,
-                  child: Text(lang.toUpperCase()),
+                  child: Text(languageLabels[lang] ?? lang.toUpperCase()),
                 );
               }).toList(),
               onChanged: (value) {
