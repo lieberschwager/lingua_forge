@@ -123,3 +123,5 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+// In main.dart
+// Updated entry point for LinguaForge
