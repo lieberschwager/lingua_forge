@@ -24,44 +24,20 @@ jobs:
         with:
           flutter-version: '3.22.0'
 
-      # ❌ Temporär deaktiviert: Erstellt neues Flutter-Projekt und überschreibt bestehende Struktur
-      # - name: 🧱 Create new Flutter project
-      #   run: flutter create -t app lingua_forge_clean
+      - name: 🧹 Flutter Clean
+        run: flutter clean
 
-      # ❌ Kritisch: Löscht dein gesamtes Projekt und ersetzt es durch lingua_forge_clean
-      # - name: 🔁 Replace old project with new (Root-Level)
-      #   run: |
-      #     # ⚠️ Deaktiviert, da dieser Schritt dein Projekt bei jedem Build gelöscht hat
-      #     # rm -rf lib assets pubspec.yaml android ios macos windows linux web test analysis_options.yaml .metadata README.md
-      #     # cp -r lingua_forge_clean/* .
-      #     # rm -rf lingua_forge_clean
-
-      # ❌ Automatischer Commit der Clean-Version — deaktiviert, um dein Repo zu schützen
-      # - name: 🧠 Commit new project before pulling
-      #   run: |
-      #     # git config --global user.email "ci@linguaforge.com"
-      #     # git config --global user.name "LinguaForge CI"
-      #     # git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/lieberschwager/lingua_forge.git
-      #     # git add -A
-      #     # git diff --cached --quiet || git commit -m "CI: Übernehme lingua_forge_clean direkt ins Repository"
-
-      # ❌ Pull & Push nach automatischem Commit — ebenfalls deaktiviert
-      # - name: 🔄 Pull latest changes and push
-      #   run: |
-      #     # git pull origin main --rebase
-      #     # git push origin main
+      - name: 📦 Get Dependencies
+        run: flutter pub get
 
       - name: 🚀 Build APK
-        run: |
-          flutter pub get
-          flutter build apk --release
+        run: flutter build apk --release
 
       - name: 📁 Prepare upload folder
         run: mkdir -p upload
 
       - name: 📤 Move APK to upload folder
-        run: |
-          cp build/app/outputs/flutter-apk/app-release.apk upload/
+        run: cp build/app/outputs/flutter-apk/app-release.apk upload/
 
       - name: 📎 Upload APK as artifact
         uses: actions/upload-artifact@v4
