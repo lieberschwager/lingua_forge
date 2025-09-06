@@ -10,7 +10,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name="com.example.lingua_forge.MainActivity"
+            android:name="com.lingua_forge.app.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"

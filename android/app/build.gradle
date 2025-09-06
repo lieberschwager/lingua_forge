@@ -1,10 +1,10 @@
 android {
-    namespace = "com.example.lingua_forge"
+    namespace = "com.lingua_forge.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
     defaultConfig {
-        applicationId = "com.example.lingua_forge"
+        applicationId = "com.lingua_forge.app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
