@@ -30,6 +30,12 @@ jobs:
       - name: 📦 Get Dependencies
         run: flutter pub get
 
+      - name: 📊 Check outdated packages
+        run: flutter pub outdated
+
+      - name: ⬆️ Upgrade packages
+        run: flutter pub upgrade --major-versions
+
       - name: 🚀 Build APK
         run: flutter build apk --release
 
