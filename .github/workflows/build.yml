@@ -27,6 +27,9 @@ jobs:
       - name: 🧹 Flutter Clean
         run: flutter clean
 
+      - name: 🧼 Remove build caches
+        run: rm -rf .dart_tool/ .gradle/ build/
+
       - name: 📦 Get Dependencies
         run: flutter pub get
 
